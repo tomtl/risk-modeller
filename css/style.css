@@ -3,23 +3,6 @@ body {
   padding: 0;
 }
 
-/* #panel {
-    width: 25%;
-    height: 80%;
-    padding: 0px;
-    display: inline-block;
-    vertical-align: top;
-    border: 2px solid black;
-    border-radius: 5px;
-}
-
-#map {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 70%;
-} */
-
 #map {
 position: absolute;
 left: 25%;

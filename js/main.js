@@ -6,3 +6,28 @@ var map = new mapboxgl.Map({
     center: [-90.0, 44.8], // starting position [lng, lat],
     zoom: 6 // starting zoom
 });
+
+// setup data source
+// https://docs.mapbox.com/mapbox-gl-js/style-spec/sources/#geojson
+// https://docs.mapbox.com/mapbox-gl-js/api/?size=n_10_n#map#addsource
+map.on('load', function(){
+    map.addSource('census-tracts', {
+        "type": "geojson",
+        "data": "data/cancer_tracts/cancer_tracts.geojson"
+    });
+    map.addSource('well-points', {
+        "type": "geojson",
+        "data": "data/well_nitrate/well_nitrate.geojson"
+    });
+    map.addLayer({
+        // https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/
+        "id": "census-tracts",
+        "source": "census-tracts",
+        "type": "line"
+    });
+    map.addLayer({
+        "id": "well-points",
+        "source": "well-points",
+        "type": "circle"
+    });
+});
