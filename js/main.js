@@ -64,7 +64,6 @@ map.on('load', function(){
                             4, "#a1307e",
                             12, "yellow"
                 ],
-                "fill-outline-color": "#ffffff",
                 "fill-opacity": 0.90
                 }
             });
@@ -94,7 +93,6 @@ map.on('load', function(){
                 //                 0.1, "#20928c",
                 //                 0.3, "yellow"
                 //     ],
-                //     "fill-outline-color": "#ffffff",
                 //     "fill-opacity": 0.90
                 //     }
                 // });
