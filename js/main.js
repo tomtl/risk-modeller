@@ -37,40 +37,67 @@ map.on('load', function(){
     map.on('click', function(){
         // turn the current layers off
         // https://docs.mapbox.com/mapbox-gl-js/example/toggle-layers/
-        // map.setLayoutProperty('well-points', 'visibility', 'none')
+        map.setLayoutProperty('well-points', 'visibility', 'none')
         // map.setLayoutProperty('census-tracts', 'visibility', 'none')
-        $.getJSON("data/well_nitrate/well_nitrate.geojson", function(wellPoints){
-            var distance = 10;
-            var idwOptions = {gridType: "square", property: "nitr_con", units: "kilometers"};
-            var wellGrid = turf.interpolate(wellPoints, distance, idwOptions);
 
+        $.getJSON("data/well_nitrate/well_nitrate.geojson", function(wellPoints){
             // interpolate the wells grid
             // https://turfjs.org/docs/#interpolate
+            var distance = 10;
+            var weight = 2;
+            var idwOptions = {gridType: "hex", property: "nitr_con", units: "kilometers", weight: weight};
+            var wellGrid = turf.interpolate(wellPoints, distance, idwOptions);
+
+            // add nitrate grid to map
+            // map.addLayer({
+            //     "id": "wells-grid",
+            //     "source": {
+            //         "type": "geojson",
+            //         "data": wellGrid
+            //     },
+            //     "type": "fill",
+            //     "paint": {
+            //         "fill-color": [ "interpolate",
+            //             ["linear"],
+            //             ["get", "nitr_con"],
+            //                 0, "#000000",
+            //                 4, "#a1307e",
+            //                 12, "yellow"
+            //     ],
+            //     "fill-outline-color": "#ffffff",
+            //     "fill-opacity": 0.90
+            //     }
+            // });
+        });
+
+        // interpolate the census tracts cancer rates data to a grid
+        $.getJSON("data/cancer_tracts/cancer_tract_centroids.geojson", function(tractPolygons){
+            // interpolate the tracts
+            // https://turfjs.org/docs/#interpolate
+            var distance = 10;
+            var weight = 2.0;
+            var idwOptions = {gridType: "square", property: "canrate", units: "kilometers", weight: weight};
+            var tractGrid = turf.interpolate(tractPolygons, distance, idwOptions);
+
             map.addLayer({
-                "id": "wells-grid",
+                "id": "tracts-grid",
                 "source": {
                     "type": "geojson",
-                    "data": wellGrid
+                    "data": tractGrid
                 },
                 "type": "fill",
                 "paint": {
                     "fill-color": [ "interpolate",
                         ["linear"],
-                        ["get", "nitr_con"],
-                            0, "blue",
-                            5, "yellow",
-                            10, "red"
+                        ["get", "canrate"],
+                            0.0, "#440154",
+                            0.1, "#20928c",
+                            0.3, "yellow"
                 ],
                 "fill-outline-color": "#ffffff",
                 "fill-opacity": 0.90
                 }
             });
-
         });
-
-
-
-
-
     });
 });
