@@ -72,30 +72,30 @@ map.on('load', function(){
             $.getJSON("data/cancer_tracts/cancer_tract_centroids.geojson", function(tractPolygons){
                 // interpolate the tracts
                 // https://turfjs.org/docs/#interpolate
-                var distance = 10;
-                var weight = 2.0;
-                var idwOptions = {gridType: "point", property: "canrate", units: "kilometers", weight: weight};
+                var distance = 7;
+                var weight = 4.0;
+                var idwOptions = {gridType: "points", property: "canrate", units: "kilometers", weight: weight};
                 var tractGrid = turf.interpolate(tractPolygons, distance, idwOptions);
 
-                // map.setLayoutProperty('nitrate-grid', 'visibility', 'none')
-                // map.addLayer({
-                //     "id": "tracts-grid",
-                //     "source": {
-                //         "type": "geojson",
-                //         "data": tractGrid
-                //     },
-                //     "type": "fill",
-                //     "paint": {
-                //         "fill-color": [ "interpolate",
-                //             ["linear"],
-                //             ["get", "canrate"],
-                //                 0.0, "#440154",
-                //                 0.1, "#20928c",
-                //                 0.3, "yellow"
-                //     ],
-                //     "fill-opacity": 0.90
-                //     }
-                // });
+                map.setLayoutProperty('nitrate-grid', 'visibility', 'none')
+                map.addLayer({
+                    "id": "tracts-grid",
+                    "source": {
+                        "type": "geojson",
+                        "data": tractGrid
+                    },
+                    "type": "fill",
+                    "paint": {
+                        "fill-color": [ "interpolate",
+                            ["linear"],
+                            ["get", "canrate"],
+                                0.0, "#440154",
+                                0.1, "#20928c",
+                                0.3, "yellow"
+                    ],
+                    "fill-opacity": 0.90
+                    }
+                });
 
                 // regression time
                 // build the array of nitrate values and cancer rates
