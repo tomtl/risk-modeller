@@ -77,25 +77,25 @@ map.on('load', function(){
                 var idwOptions = {gridType: "points", property: "canrate", units: "kilometers", weight: weight};
                 var tractGrid = turf.interpolate(tractPolygons, distance, idwOptions);
 
-                map.setLayoutProperty('nitrate-grid', 'visibility', 'none')
-                map.addLayer({
-                    "id": "tracts-grid",
-                    "source": {
-                        "type": "geojson",
-                        "data": tractGrid
-                    },
-                    "type": "fill",
-                    "paint": {
-                        "fill-color": [ "interpolate",
-                            ["linear"],
-                            ["get", "canrate"],
-                                0.0, "#440154",
-                                0.1, "#20928c",
-                                0.3, "yellow"
-                    ],
-                    "fill-opacity": 0.90
-                    }
-                });
+                // map.setLayoutProperty('nitrate-grid', 'visibility', 'none')
+                // map.addLayer({
+                //     "id": "tracts-grid",
+                //     "source": {
+                //         "type": "geojson",
+                //         "data": tractGrid
+                //     },
+                //     "type": "fill",
+                //     "paint": {
+                //         "fill-color": [ "interpolate",
+                //             ["linear"],
+                //             ["get", "canrate"],
+                //                 0.0, "#440154",
+                //                 0.1, "#20928c",
+                //                 0.3, "yellow"
+                //     ],
+                //     "fill-opacity": 0.90
+                //     }
+                // });
 
                 // regression time
                 // build the array of nitrate values and cancer rates
@@ -110,6 +110,36 @@ map.on('load', function(){
                 // carry out the linear regression
                 var linearRegression = ss.linearRegression(valuesArray);
                 console.log(linearRegression);
+
+                // create the regression layer
+                var regressionGrid = nitrateGrid;
+                for (var i  in regressionGrid.features){
+                    // if (i >= 5) {break};
+                    var nitrateValue = regressionGrid.features[i].properties.nitr_con;
+                    var calculatedCanrate = Math.round(((linearRegression.m * nitrateValue) + linearRegression.b)*100000)/100000;
+                    regressionGrid.features[i].properties.canrate = calculatedCanrate;
+                    console.log(nitrateValue, calculatedCanrate, regressionGrid.features[i].properties.canrate);
+                };
+
+                map.setLayoutProperty('nitrate-grid', 'visibility', 'none');
+                map.addLayer({
+                    "id": "regression-grid",
+                    "source": {
+                        "type": "geojson",
+                        "data": regressionGrid
+                    },
+                    "type": "fill",
+                    "paint": {
+                        "fill-color": [ "interpolate",
+                            ["linear"],
+                            ["get", "canrate"],
+                                0, "blue",
+                                0.15, "yellow",
+                                0.3, "red"
+                    ],
+                    "fill-opacity": 0.90
+                    }
+                });
             });
         });
 
