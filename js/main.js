@@ -127,18 +127,18 @@ map.on('load', function(){
                     var gridPoint = turf.centerOfMass(regressionGrid.features[i]);
                     for (var j in statePolygon.features){
                         if (turf.booleanPointInPolygon(gridPoint, statePolygon.features[j])) {
+                            // check if within state
                             var nitrateValue = regressionGrid.features[i].properties.nitr_con;
                             var calculatedCanrate = Math.round(((linearRegression.m * nitrateValue) + linearRegression.b)*100000)/100000;
                             regressionGrid.features[i].properties.calc_canrate = calculatedCanrate;
+                            regressionGrid.features[i].properties.residual = regressionGrid.features[i].properties.obs_canrate - calculatedCanrate;
                         } else {
                             regressionGrid.features[i].properties.calc_canrate = 0.0;
                         };
                     };
-                    // var nitrateValue = regressionGrid.features[i].properties.nitr_con;
-                    // var calculatedCanrate = Math.round(((linearRegression.m * nitrateValue) + linearRegression.b)*100000)/100000;
-                    // regressionGrid.features[i].properties.calc_canrate = calculatedCanrate;
                 };
 
+                // display the regression results
                 map.setLayoutProperty('nitrate-grid', 'visibility', 'none');
                 map.addLayer({
                     "id": "regression-grid",
@@ -159,8 +159,30 @@ map.on('load', function(){
                     }
                 });
 
+                // display the residual
+                map.setLayoutProperty('regression-grid', 'visibility', 'none');
+                map.addLayer({
+                    "id": "residual-grid",
+                    "source": {
+                        "type": "geojson",
+                        "data": regressionGrid
+                    },
+                    "type": "fill",
+                    "paint": {
+                        "fill-color": [ "interpolate",
+                            ["linear"],
+                            ["get", "residual"],
+                                0, "blue",
+                                0.15, "yellow",
+                                0.3, "red"
+                    ],
+                    "fill-opacity": 0.90
+                    }
+                });
+
                 // create the rsquared layer
                 var rsqauredArray = ss.rSquared(valuesArray, regressionLine);
+                console.log("R-Squared value: " + rsqauredArray);
             });
         });
         });
