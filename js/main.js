@@ -34,7 +34,9 @@ map.on('load', function(){
         "type": "circle"
     });
 
-    map.on('click', function(){
+    $('#weight-submit').on('click', function(){
+        var weightValue = document.getElementById("weight-input").value;
+        console.log("Weight: " + weightValue);
         // turn the current layers off
         // https://docs.mapbox.com/mapbox-gl-js/example/toggle-layers/
         map.setLayoutProperty('well-points', 'visibility', 'none')
@@ -44,7 +46,7 @@ map.on('load', function(){
             // interpolate the wells grid
             // https://turfjs.org/docs/#interpolate
             var distance = 10;
-            var weight = 2;
+            var weight = parseFloat(weightValue);
             var idwOptions = {gridType: "hex", property: "nitr_con", units: "kilometers", weight: weight};
             var nitrateGrid = turf.interpolate(wellPoints, distance, idwOptions);
 
