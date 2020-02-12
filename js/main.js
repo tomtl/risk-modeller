@@ -26,7 +26,17 @@ map.on('load', function(){
     map.addLayer({
         "id": "census-tracts",
         "source": "census-tracts",
-        "type": "line"
+        "type": "fill",
+        "paint": {
+            "fill-color": [ "interpolate",
+                ["linear"],
+                ["get", "canrate"],
+                    0.0, "blue",
+                    0.25, "yellow",
+                    0.5, "red"
+            ],
+            "fill-opacity": 0.80
+        }
     });
     map.addLayer({
         "id": "well-points",
@@ -81,25 +91,25 @@ map.on('load', function(){
                 var idwOptions = {gridType: "points", property: "canrate", units: "kilometers", weight: weight};
                 var tractGrid = turf.interpolate(tractPolygons, distance, idwOptions);
 
-                map.setLayoutProperty('nitrate-grid', 'visibility', 'none')
-                map.addLayer({
-                    "id": "tracts-grid",
-                    "source": {
-                        "type": "geojson",
-                        "data": tractGrid
-                    },
-                    "type": "fill",
-                    "paint": {
-                        "fill-color": [ "interpolate",
-                            ["linear"],
-                            ["get", "canrate"],
-                                0.0, "#440154",
-                                0.1, "#20928c",
-                                0.3, "yellow"
-                    ],
-                    "fill-opacity": 0.90
-                    }
-                });
+                // map.setLayoutProperty('nitrate-grid', 'visibility', 'none')
+                // map.addLayer({
+                //     "id": "tracts-grid",
+                //     "source": {
+                //         "type": "geojson",
+                //         "data": tractGrid
+                //     },
+                //     "type": "fill",
+                //     "paint": {
+                //         "fill-color": [ "interpolate",
+                //             ["linear"],
+                //             ["get", "canrate"],
+                //                 0.0, "#440154",
+                //                 0.25, "#20928c",
+                //                 0.5, "yellow"
+                //     ],
+                //     "fill-opacity": 0.90
+                //     }
+                // });
 
                 // regression time
                 // build the array of nitrate values and cancer rates
@@ -153,9 +163,9 @@ map.on('load', function(){
                         "fill-color": [ "interpolate",
                             ["linear"],
                             ["get", "calc_canrate"],
-                                0, "blue",
+                                0.00, "blue",
                                 0.15, "yellow",
-                                0.3, "red"
+                                0.30, "red"
                     ],
                     "fill-opacity": 0.90
                     }
@@ -174,7 +184,8 @@ map.on('load', function(){
                         "fill-color": [ "interpolate",
                             ["linear"],
                             ["get", "residual"],
-                                0, "blue",
+                                0, "#000000",
+                                0.0001, "blue",
                                 0.15, "yellow",
                                 0.3, "red"
                     ],
@@ -204,19 +215,18 @@ map.on('load', function(){
                     link.textContent = id;
 
                     link.onclick = function(e) {
-                    var clickedLayer = this.textContent;
-                    e.preventDefault();
-                    e.stopPropagation();
+                        var clickedLayer = this.textContent;
+                        e.preventDefault();
+                        e.stopPropagation();
 
-                    var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
-
-                    if (visibility === 'visible') {
-                    map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-                    this.className = '';
-                    } else {
-                    this.className = 'active';
-                    map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-                    }
+                        var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+                        if (visibility === 'visible') {
+                            map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                            this.className = '';
+                        } else {
+                            this.className = 'active';
+                            map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+                            }
                     };
 
                     var layers = document.getElementById('menu');
