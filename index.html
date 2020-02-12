@@ -19,15 +19,17 @@
 
 <body>
   <div id="map"></div>
+  <nav id="menu"></nav>
   <div id="panel">
     <h2>Modeller Panel</h2>
+
     <h4>Interpolation weight</h4>
     <p>
         Set the IDW interpolation distance decay weight.
         A high weight value means closer neighbors will have more importance.
     </p>
     <div class="input-group mb-3">
-        <input id="weight-input" type="text" class="form-control" placeholder="Default: 2" aria-label="Distance-decay weight" aria-describedby="button-addon2">
+        <input id="weight-input" type="text" class="form-control" autocomplete="off" value="2" placeholder="Default: 2" aria-label="Distance-decay weight" aria-describedby="button-addon2">
         <div class="input-group-append">
             <button class="btn btn-outline-secondary" type="button" id="weight-submit">Submit</button>
         </div>

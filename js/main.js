@@ -12,10 +12,10 @@ var map = new mapboxgl.Map({
 // https://docs.mapbox.com/mapbox-gl-js/style-spec/sources/#geojson
 // https://docs.mapbox.com/mapbox-gl-js/api/?size=n_10_n#map#addsource
 map.on('load', function(){
-    // map.addSource('census-tracts', {
-    //     "type": "geojson",
-    //     "data": "data/cancer_tracts/cancer_tracts.geojson"
-    // });
+    map.addSource('census-tracts', {
+        "type": "geojson",
+        "data": "data/cancer_tracts/cancer_tracts.geojson"
+    });
     map.addSource('well-points', {
         "type": "geojson",
         "data": "data/well_nitrate/well_nitrate.geojson"
@@ -23,11 +23,11 @@ map.on('load', function(){
 
     // add layers to the map
     // https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/
-    // map.addLayer({
-    //     "id": "census-tracts",
-    //     "source": "census-tracts",
-    //     "type": "line"
-    // });
+    map.addLayer({
+        "id": "census-tracts",
+        "source": "census-tracts",
+        "type": "line"
+    });
     map.addLayer({
         "id": "well-points",
         "source": "well-points",
@@ -185,6 +185,43 @@ map.on('load', function(){
                 // create the rsquared layer
                 var rsqauredArray = ss.rSquared(valuesArray, regressionLine);
                 console.log("R-Squared value: " + rsqauredArray);
+
+                // layer toggle
+                var toggleableLayerIds = [
+                    'census-tracts',
+                    'well-points',
+                    'nitrate-grid',
+                    'regression-grid',
+                    'residual-grid'
+                ];
+
+                for (var i = 0; i < toggleableLayerIds.length; i++) {
+                    var id = toggleableLayerIds[i];
+
+                    var link = document.createElement('a');
+                    link.href = '#';
+                    link.className = 'active';
+                    link.textContent = id;
+
+                    link.onclick = function(e) {
+                    var clickedLayer = this.textContent;
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+
+                    if (visibility === 'visible') {
+                    map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                    this.className = '';
+                    } else {
+                    this.className = 'active';
+                    map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+                    }
+                    };
+
+                    var layers = document.getElementById('menu');
+                    layers.appendChild(link);
+                };
             });
         });
         });
