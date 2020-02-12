@@ -8,6 +8,8 @@ var map = new mapboxgl.Map({
     zoom: 6 // starting zoom
 });
 
+var regressionGrid = [];
+
 // setup data source
 // https://docs.mapbox.com/mapbox-gl-js/style-spec/sources/#geojson
 // https://docs.mapbox.com/mapbox-gl-js/api/?size=n_10_n#map#addsource
@@ -134,7 +136,7 @@ map.on('load', function(){
                 console.log(linearRegression);
 
                 // create the regression layer
-                var regressionGrid = nitrateGrid;
+                regressionGrid = nitrateGrid;
                 for (var i  in regressionGrid.features){
                     var gridPoint = turf.centerOfMass(regressionGrid.features[i]);
                     for (var j in statePolygon.features){
@@ -197,6 +199,9 @@ map.on('load', function(){
                 var rsqauredArray = ss.rSquared(valuesArray, regressionLine);
                 console.log("R-Squared value: " + rsqauredArray);
 
+                // setup the chart
+                createChart(regressionGrid);
+
                 // layer toggle
                 var toggleableLayerIds = [
                     'census-tracts',
@@ -232,6 +237,7 @@ map.on('load', function(){
                     var layers = document.getElementById('menu');
                     layers.appendChild(link);
                 };
+
             });
         });
         });
@@ -239,3 +245,60 @@ map.on('load', function(){
 
     });
 });
+
+function createChart(data){
+    chart = document.getElementById('chart');
+
+    var nitrList = [];
+    var obsCanrateList = [];
+    var calcCanrateList = []
+    for (var i in data.features){
+        // if (i >= 100) {break};
+        var obs_canrate = data.features[i].properties.obs_canrate;
+        var calc_canrate = data.features[i].properties.calc_canrate
+        var nitr_con = data.features[i].properties.nitr_con;
+
+        if (calc_canrate > 0) {
+            nitrList.push(nitr_con);
+            obsCanrateList.push(obs_canrate);
+            calcCanrateList.push(calc_canrate);
+        };
+
+    };
+
+    // Plotly.plot( chart, [{
+    // x: x,
+    // y: y }], {
+    // margin: { t: 0 } });
+
+    var trace1 = {
+        x: nitrList,
+        y: obsCanrateList,
+        mode: 'markers',
+        type: 'scatter',
+        name: 'Actual cancer rates'
+    };
+
+    var trace2 = {
+      x: nitrList,
+      y: calcCanrateList,
+      mode: 'markers',
+      type: 'scatter',
+      name: 'Calculated cancer rates'
+    };
+
+
+    var chartData = [trace1, trace2];
+
+    Plotly.newPlot('chart', chartData);
+
+};
+//
+// TESTER = document.getElementById('chart');
+//
+// console.log(regressionGrid);
+//
+// Plotly.newPlot( TESTER, [{
+// x: [1, 2, 3, 4, 5],
+// y: [1, 2, 4, 8, 16] }], {
+// margin: { t: 0 } } );
