@@ -202,6 +202,9 @@ map.on('load', function(){
                 // setup the chart
                 createChart(regressionGrid);
 
+                // remove the IDW weight div
+                $('#weight-input-div').hide();
+
                 // layer toggle
                 var toggleableLayerIds = [
                     'census-tracts',
@@ -249,11 +252,11 @@ map.on('load', function(){
 function createChart(data){
     chart = document.getElementById('chart');
 
+    // set up the data for the chart
     var nitrList = [];
     var obsCanrateList = [];
     var calcCanrateList = []
     for (var i in data.features){
-        // if (i >= 100) {break};
         var obs_canrate = data.features[i].properties.obs_canrate;
         var calc_canrate = data.features[i].properties.calc_canrate
         var nitr_con = data.features[i].properties.nitr_con;
@@ -263,14 +266,9 @@ function createChart(data){
             obsCanrateList.push(obs_canrate);
             calcCanrateList.push(calc_canrate);
         };
-
     };
 
-    // Plotly.plot( chart, [{
-    // x: x,
-    // y: y }], {
-    // margin: { t: 0 } });
-
+    // observed canrate points
     var trace1 = {
         x: nitrList,
         y: obsCanrateList,
@@ -279,6 +277,7 @@ function createChart(data){
         name: 'Actual cancer rates'
     };
 
+    // calculated canrate points
     var trace2 = {
       x: nitrList,
       y: calcCanrateList,
@@ -287,18 +286,29 @@ function createChart(data){
       name: 'Calculated cancer rates'
     };
 
+    var layout = {
+      title: {
+        text:'Scatterplot',
+      },
+      xaxis: {
+        title: {
+          text: 'Nitrate concentration',
+        },
+      },
+      yaxis: {
+        title: {
+          text: 'Cancer rate',
+        }
+      },
+      margin: {
+          l: 40,
+          r: 40,
+          b: 40,
+          t: 40
+      }
+    };
 
+    // render the chart
     var chartData = [trace1, trace2];
-
-    Plotly.newPlot('chart', chartData);
-
+    Plotly.newPlot('chart', chartData, layout, {displayModeBar: false});
 };
-//
-// TESTER = document.getElementById('chart');
-//
-// console.log(regressionGrid);
-//
-// Plotly.newPlot( TESTER, [{
-// x: [1, 2, 3, 4, 5],
-// y: [1, 2, 4, 8, 16] }], {
-// margin: { t: 0 } } );

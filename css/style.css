@@ -63,3 +63,8 @@ width: 75%;
 #menu a.active:hover {
     background: #3074a4;
 }
+
+#chart {
+    height: 50%;
+    layout.margin: 20px;
+}
