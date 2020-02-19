@@ -23,6 +23,11 @@ map.on('load', function(){
         "data": "data/well_nitrate/well_nitrate.geojson"
     });
 
+    // hide the unused legends
+    $('#nitrate-grid-legend').hide();
+    $('#regression-grid-legend').hide();
+    $('#residual-grid-legend').hide();
+
     // add layers to the map
     // https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/
     map.addLayer({
@@ -68,7 +73,9 @@ map.on('load', function(){
         // turn the current layers off
         // https://docs.mapbox.com/mapbox-gl-js/example/toggle-layers/
         map.setLayoutProperty('well-points', 'visibility', 'none')
-        // map.setLayoutProperty('census-tracts', 'visibility', 'none')
+        map.setLayoutProperty('census-tracts', 'visibility', 'none')
+        $('#well-points-legend').hide();
+        $('#census-tracts-legend').hide();
 
         $.getJSON("data/well_nitrate/well_nitrate.geojson", function(wellPoints){
             // interpolate the wells grid
@@ -97,6 +104,7 @@ map.on('load', function(){
                 "fill-opacity": 0.65
                 }
             });
+            $('#nitrate-grid-legend').show();
 
             // interpolate the census tracts cancer rates data to a grid
             $.getJSON("data/cancer_tracts/cancer_tract_centroids.geojson", function(tractPolygons){
@@ -170,6 +178,7 @@ map.on('load', function(){
 
                 // display the regression results
                 map.setLayoutProperty('nitrate-grid', 'visibility', 'none');
+                $('#nitrate-grid-legend').hide();
                 map.addLayer({
                     "id": "regression-grid",
                     "source": {
@@ -188,9 +197,9 @@ map.on('load', function(){
                     "fill-opacity": 0.90
                     }
                 });
+                $('#regression-grid-legend').show();
 
-                // display the residual
-                map.setLayoutProperty('regression-grid', 'visibility', 'none');
+                // add the residual layer but dont display it
                 map.addLayer({
                     "id": "residual-grid",
                     "source": {
@@ -210,6 +219,8 @@ map.on('load', function(){
                     "fill-opacity": 0.90
                     }
                 });
+                map.setLayoutProperty('residual-grid', 'visibility', 'none');
+                $('#residual-grid-legend').hide();
 
                 // create the rsquared layer
                 var rsqauredArray = ss.rSquared(valuesArray, regressionLine);
@@ -235,7 +246,13 @@ map.on('load', function(){
 
                     var link = document.createElement('a');
                     link.href = '#';
-                    link.className = 'active';
+                    // link.className = 'inactive';
+                    if (id == 'regression-grid') {
+                        link.className = 'active';
+                    } else {
+                        link.className = 'inactive';
+                    };
+
                     link.textContent = id;
 
                     link.onclick = function(e) {
@@ -246,10 +263,12 @@ map.on('load', function(){
                         var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
                         if (visibility === 'visible') {
                             map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                            $('#' + clickedLayer + '-legend').hide();
                             this.className = '';
                         } else {
                             this.className = 'active';
                             map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+                            $('#' + clickedLayer + '-legend').show();
                             }
                     };
 
