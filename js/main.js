@@ -37,13 +37,29 @@ map.on('load', function(){
                     0.25, "yellow",
                     0.5, "red"
             ],
-            "fill-opacity": 0.80
+            "fill-opacity": 0.65
         }
     });
     map.addLayer({
         "id": "well-points",
         "source": "well-points",
-        "type": "circle"
+        "type": "circle",
+        'paint': {
+            // make circles larger as the user zooms from z6 to z12
+            'circle-radius': {
+                'base': 1.0,
+                'stops': [[6, 2], [12, 5]]
+            },
+            // color circles by ethnicity, using a match expression
+            // https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-match
+            'circle-color': [ "interpolate",
+                ["linear"],
+                ["get", "nitr_con"],
+                0, "#ffffff",
+                4, "pink",
+                12, "dark magenta"
+            ]
+        },
     });
 
     $('#weight-submit').on('click', function(){
@@ -74,11 +90,11 @@ map.on('load', function(){
                     "fill-color": [ "interpolate",
                         ["linear"],
                         ["get", "nitr_con"],
-                            0, "#000000",
-                            4, "#a1307e",
-                            12, "yellow"
+                            0, "#ffffff",
+                            4, "pink",
+                            12, "dark magenta"
                 ],
-                "fill-opacity": 0.90
+                "fill-opacity": 0.65
                 }
             });
 
