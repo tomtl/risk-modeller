@@ -33,7 +33,7 @@ map.on('load', function(){
             "fill-color": [ "interpolate",
                 ["linear"],
                 ["get", "canrate"],
-                    0.0, "blue",
+                    0.0, "#2974ff",
                     0.25, "yellow",
                     0.5, "red"
             ],
@@ -55,9 +55,9 @@ map.on('load', function(){
             'circle-color': [ "interpolate",
                 ["linear"],
                 ["get", "nitr_con"],
-                0, "#ffffff",
-                4, "pink",
-                12, "dark magenta"
+                0, "#fff2f5",
+                4, "#ff63b6",
+                12, "#8b008b"
             ]
         },
     });
@@ -90,9 +90,9 @@ map.on('load', function(){
                     "fill-color": [ "interpolate",
                         ["linear"],
                         ["get", "nitr_con"],
-                            0, "#ffffff",
-                            4, "pink",
-                            12, "dark magenta"
+                            0, "#fff2f5",
+                            4, "#ff63b6",
+                            12, "#8b008b"
                 ],
                 "fill-opacity": 0.65
                 }
@@ -181,7 +181,7 @@ map.on('load', function(){
                         "fill-color": [ "interpolate",
                             ["linear"],
                             ["get", "calc_canrate"],
-                                0.00, "blue",
+                                0.00, "#2974ff",
                                 0.15, "yellow",
                                 0.30, "red"
                     ],
