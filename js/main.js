@@ -69,7 +69,25 @@ map.on('load', function(){
 
     $('#weight-submit').on('click', function(){
         var weightValue = document.getElementById("weight-input").value;
-        console.log("Weight: " + weightValue);
+        console.log("Input Weight: " + weightValue);
+
+        // validate user entry
+        if (isNaN(weightValue)) {
+            var message = "Not a number. Changing weight to 2.";
+            document.getElementById('idw-weight').innerHTML = '<p>' + message + '</p>';
+            console.log(message);
+            weightValue = 2;
+        };
+
+        if (weightValue < 1){
+            var message = "Weight must be 1 or greater. Changing weight to 2.";
+            document.getElementById('idw-weight').innerHTML = '<p>' + message + '</p>';
+            console.log(message);
+            weightValue = 2;
+        }
+
+        console.log("IDW weight: " + weightValue);
+
         // turn the current layers off
         // https://docs.mapbox.com/mapbox-gl-js/example/toggle-layers/
         map.setLayoutProperty('well-points', 'visibility', 'none')
