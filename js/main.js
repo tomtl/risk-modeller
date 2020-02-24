@@ -75,20 +75,21 @@ map.on('load', function(){
 
         // validate user entry
         if (isNaN(weightValue)) {
-            var message = "Not a number. Changing weight to 2.";
+            var message = "k value must be a number >= 1. Setting k to 2.";
             document.getElementById('idw-weight').innerHTML = '<p>' + message + '</p>';
             console.log(message);
             weightValue = 2;
         };
 
         if (weightValue < 1){
-            var message = "Weight must be 1 or greater. Changing weight to 2.";
+            var message = "k value must be 1 or greater. Setting k to 2.";
             document.getElementById('idw-weight').innerHTML = '<p>' + message + '</p>';
             console.log(message);
             weightValue = 2;
         }
 
         console.log("IDW weight: " + weightValue);
+        document.getElementById('idw-weight').innerHTML = '<p><strong>k value: </strong>' + weightValue + '</p>';
 
         // turn the current layers off
         // https://docs.mapbox.com/mapbox-gl-js/example/toggle-layers/
@@ -245,6 +246,8 @@ map.on('load', function(){
                 // create the rsquared layer
                 var rsqauredArray = ss.rSquared(valuesArray, regressionLine);
                 console.log("R-Squared value: " + rsqauredArray);
+                document.getElementById('stats').innerHTML = '<p><strong>R-squared: </strong>' + rsqauredArray + '</p>';
+
 
                 // setup the chart
                 createChart(regressionGrid);

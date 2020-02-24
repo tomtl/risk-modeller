@@ -37,11 +37,11 @@
     <div id='weight-input-div' class="input-group mb-3">
         <h4>Interpolation weight</h4>
         <p>
-            Set the IDW interpolation distance decay coefficient.
+            Set the IDW interpolation distance decay coefficient k.
             A high value means closer neighbors will have more importance.
             Values should be greater than 1.
         </p>
-        <input id="weight-input" type="text" class="form-control" autocomplete="off" value="2" placeholder="Default: 2" aria-label="Distance-decay weight" aria-describedby="button-addon2">
+        <input id="weight-input" type="text" class="form-control" autocomplete="off" placeholder="k value (Default: 2)" aria-label="Distance-decay weight" aria-describedby="button-addon2">
         <div class="input-group-append">
             <button class="btn btn-outline-secondary" type="button" id="weight-submit">Submit</button>
         </div>
@@ -97,6 +97,7 @@
     </div>
 
     <div id="chart"></div>
+    <div id="stats"></div>
 
 
   </div>
