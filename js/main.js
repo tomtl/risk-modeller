@@ -273,7 +273,15 @@ map.on('load', function(){
                         link.className = 'inactive';
                     };
 
-                    link.textContent = id;
+                    // Layer labels
+                    var layerLabels = {
+                        'census-tracts': 'Observed cancer rates',
+                        'well-points': 'Well nitrate concentrations',
+                        'nitrate-grid': 'Interpolated nitrate grid',
+                        'regression-grid': 'Regression results',
+                        'residual-grid': 'Regression residuals'
+                    };
+                    link.textContent = layerLabels[id];
 
                     link.onclick = function(e) {
                         var clickedLayer = this.textContent;
