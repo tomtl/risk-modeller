@@ -16,11 +16,9 @@ width: 75%;
   width: 23%;
   top: 0;
   bottom: 0;
+  overflow-y: scroll;
   left: 1%;
-  /* font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif; */
   background-color: #fff;
-  max-height: 100%;
-  overflow: hidden;
 }
 #menu {
     background: #fff;
@@ -64,8 +62,20 @@ width: 75%;
     background: #3074a4;
 }
 
+#export {
+    /* background: #fff; */
+    position: absolute;
+    z-index: 1;
+    top: 10px;
+    left: 26%;
+    /* border-radius: 3px; */
+    /* width: 120px; */
+    /* border: 1px solid rgba(0, 0, 0, 0.4); */
+    /* font-family: 'Open Sans', sans-serif; */
+}
+
 #chart {
-    height: 50%;
+    height: 40%;
     layout.margin: 20px;
 }
 

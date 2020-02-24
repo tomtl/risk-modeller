@@ -5,7 +5,8 @@ var map = new mapboxgl.Map({
     // style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
     style: 'mapbox://styles/mapbox/dark-v10',
     center: [-90.0, 44.8], // starting position [lng, lat],
-    zoom: 6 // starting zoom
+    zoom: 6, // starting zoom
+    preserveDrawingBuffer: true
 });
 
 var regressionGrid = [];
@@ -247,7 +248,8 @@ map.on('load', function(){
                 // setup the chart
                 createChart(regressionGrid);
 
-                // remove the IDW weight div
+                // remove the intro and IDW weight div
+                $('#intro').hide();
                 $('#weight-input-div').hide();
 
                 // layer toggle
@@ -298,7 +300,20 @@ map.on('load', function(){
         });
         });
 
-
+        // // Export the screen as an image
+        // $("#export").on('click', function() {
+        //     // var canvas = document.getElementById("map");
+        //     var image = map.getCanvas().toDataURL("image/png") //.replace("image/png", "image/octet-stream"); //Convert image to 'octet-stream' (Just a download, really)
+        //     console.log(image);
+        //
+        //     var newData = image.replace(
+        //         // /^data:image\/png/, "data:application/octet-stream");
+        //         "image/png", "image/octet-stream");
+        //
+        //         $("#export").attr(
+        //         "download", "output.png").attr(
+        //         "href", newData);
+        // });
     });
 });
 
