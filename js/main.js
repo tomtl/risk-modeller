@@ -277,7 +277,7 @@ map.on('load', function(){
                     var layerLabels = {
                         'census-tracts': 'Observed cancer rates',
                         'well-points': 'Well nitrate concentrations',
-                        'nitrate-grid': 'Interpolated nitrate grid',
+                        'nitrate-grid': 'Interpolated nitrate values',
                         'regression-grid': 'Regression results',
                         'residual-grid': 'Regression residuals'
                     };
