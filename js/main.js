@@ -11,6 +11,12 @@ var map = new mapboxgl.Map({
 
 var regressionGrid = [];
 
+// hide the unused legends
+$('#nitrate-grid-legend').hide();
+$('#regression-grid-legend').hide();
+$('#residual-grid-legend').hide();
+$('#explanation-text').hide()
+
 // setup data source
 // https://docs.mapbox.com/mapbox-gl-js/style-spec/sources/#geojson
 // https://docs.mapbox.com/mapbox-gl-js/api/?size=n_10_n#map#addsource
@@ -23,11 +29,6 @@ map.on('load', function(){
         "type": "geojson",
         "data": "data/well_nitrate/well_nitrate.geojson"
     });
-
-    // hide the unused legends
-    $('#nitrate-grid-legend').hide();
-    $('#regression-grid-legend').hide();
-    $('#residual-grid-legend').hide();
 
     // add layers to the map
     // https://docs.mapbox.com/mapbox-gl-js/style-spec/layers/
@@ -213,7 +214,7 @@ map.on('load', function(){
                                 0.15, "yellow",
                                 0.30, "red"
                     ],
-                    "fill-opacity": 0.90
+                    "fill-opacity": 0.65
                     }
                 });
                 $('#regression-grid-legend').show();
@@ -235,7 +236,7 @@ map.on('load', function(){
                                 0.15, "yellow",
                                 0.3, "red"
                     ],
-                    "fill-opacity": 0.90
+                    "fill-opacity": 0.65
                     }
                 });
                 map.setLayoutProperty('residual-grid', 'visibility', 'none');
@@ -251,6 +252,8 @@ map.on('load', function(){
                 // remove the intro and IDW weight div
                 $('#intro').hide();
                 $('#weight-input-div').hide();
+                // display the results explanation text
+                $('#explanation-text').show()
 
                 // layer toggle
                 var toggleableLayerIds = [
@@ -284,7 +287,16 @@ map.on('load', function(){
                     link.textContent = layerLabels[id];
 
                     link.onclick = function(e) {
-                        var clickedLayer = this.textContent;
+                        var clickedText = this.textContent;
+                        var clickedLayer = '';
+
+                        for (var j in layerLabels) {
+                            // Get the layer name using the label
+                            if (clickedText === layerLabels[j]) {
+                                clickedLayer = j;
+                            };
+                        };
+
                         e.preventDefault();
                         e.stopPropagation();
 

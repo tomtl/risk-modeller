@@ -24,7 +24,7 @@
 
   <nav id="menu"></nav>
   <div id="panel">
-    <h2>Nitrate cancer risk modeller</h2>
+    <h2>Nitrate Cancer Risk</h2>
 
     <div id=intro>
         <p>This application investigates the spatial relationship between nitrate
@@ -45,6 +45,14 @@
         <div class="input-group-append">
             <button class="btn btn-outline-secondary" type="button" id="weight-submit">Submit</button>
         </div>
+    </div>
+
+    <div id='explanation-text'>
+        <p>The regression results layer shows the output of a linear regression
+            between the interpolated nitrate values and the cancer rates. The
+            residual shows where the regression results were higher or lower
+            than actual cancer rates.
+        <p>
     </div>
 
     <div id="idw-weight"></div>
