@@ -251,18 +251,16 @@ map.on('load', function(){
                 // POPUPS
                 map.on('click', 'regression-grid', function(e){
                     var coordinates = e.lngLat;
-                    var description = e.features[0].properties.calc_canrate;
+                    var props = e.features[0].properties;
 
-                    // Ensure that if the map is zoomed out such that multiple
-                    // copies of the feature are visible, the popup appears
-                    // over the copy being pointed to.
-                    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-                    }
+                    var popupText = "<b>Nitrate concentration:</b> " + round(props.nitr_con, 5)
+                        + "<br><b>Actual cancer rate:</b> " + round(props.obs_canrate, 5)
+                        + "<br><b>Calculated cancer rate:</b> " + round(props.calc_canrate, 5)
+                        + "<br><b>Residual:</b> " + round(props.residual, 5);
 
                     new mapboxgl.Popup()
                         .setLngLat(coordinates)
-                        .setHTML(description)
+                        .setHTML(popupText)
                         .addTo(map);
                 });
 
@@ -430,3 +428,7 @@ function createChart(data){
     var chartData = [trace1, trace2];
     Plotly.newPlot('chart', chartData, layout, {displayModeBar: false});
 };
+
+function round(value, decimals) {
+    return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+}
