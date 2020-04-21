@@ -232,8 +232,8 @@ map.on('load', function(){
                         "fill-color": [ "interpolate",
                             ["linear"],
                             ["get", "residual"],
-                                0, "#000000",
-                                0.0001, "blue",
+                                // 0, "#000000",
+                                0, "blue",
                                 0.15, "yellow",
                                 0.3, "red"
                     ],
@@ -248,6 +248,31 @@ map.on('load', function(){
                 console.log("R-Squared value: " + rsqauredArray);
                 document.getElementById('stats').innerHTML = '<p><strong>R-squared: </strong>' + rsqauredArray + '</p>';
 
+                // POPUPS
+                map.on('click', 'regression-grid', function(e){
+                    var coordinates = e.lngLat;
+                    var props = e.features[0].properties;
+
+                    var popupText = "<b>Nitrate concentration:</b> " + round(props.nitr_con, 5)
+                        + "<br><b>Actual cancer rate:</b> " + round(props.obs_canrate, 5)
+                        + "<br><b>Calculated cancer rate:</b> " + round(props.calc_canrate, 5)
+                        + "<br><b>Residual:</b> " + round(props.residual, 5);
+
+                    new mapboxgl.Popup()
+                        .setLngLat(coordinates)
+                        .setHTML(popupText)
+                        .addTo(map);
+                });
+
+                // Change the cursor to a pointer when the mouse is over the places layer.
+                map.on('mouseenter', 'regression-grid', function() {
+                    map.getCanvas().style.cursor = 'pointer';
+                });
+
+                // Change it back to a pointer when it leaves.
+                map.on('mouseleave', 'regression-grid', function() {
+                    map.getCanvas().style.cursor = '';
+                });
 
                 // setup the chart
                 createChart(regressionGrid);
@@ -403,3 +428,7 @@ function createChart(data){
     var chartData = [trace1, trace2];
     Plotly.newPlot('chart', chartData, layout, {displayModeBar: false});
 };
+
+function round(value, decimals) {
+    return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+}
