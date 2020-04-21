@@ -232,8 +232,8 @@ map.on('load', function(){
                         "fill-color": [ "interpolate",
                             ["linear"],
                             ["get", "residual"],
-                                0, "#000000",
-                                0.0001, "blue",
+                                // 0, "#000000",
+                                0, "blue",
                                 0.15, "yellow",
                                 0.3, "red"
                     ],
@@ -248,6 +248,33 @@ map.on('load', function(){
                 console.log("R-Squared value: " + rsqauredArray);
                 document.getElementById('stats').innerHTML = '<p><strong>R-squared: </strong>' + rsqauredArray + '</p>';
 
+                // POPUPS
+                map.on('click', 'regression-grid', function(e){
+                    var coordinates = e.lngLat;
+                    var description = e.features[0].properties.calc_canrate;
+
+                    // Ensure that if the map is zoomed out such that multiple
+                    // copies of the feature are visible, the popup appears
+                    // over the copy being pointed to.
+                    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                    }
+
+                    new mapboxgl.Popup()
+                        .setLngLat(coordinates)
+                        .setHTML(description)
+                        .addTo(map);
+                });
+
+                // Change the cursor to a pointer when the mouse is over the places layer.
+                map.on('mouseenter', 'regression-grid', function() {
+                    map.getCanvas().style.cursor = 'pointer';
+                });
+
+                // Change it back to a pointer when it leaves.
+                map.on('mouseleave', 'regression-grid', function() {
+                    map.getCanvas().style.cursor = '';
+                });
 
                 // setup the chart
                 createChart(regressionGrid);
