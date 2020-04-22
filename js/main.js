@@ -264,10 +264,10 @@ map.on('load', function(){
                     var coordinates = e.lngLat;
                     var props = e.features[0].properties;
 
-                    var popupText = "<b>Nitrate concentration:</b> " + round(props.nitr_con, 5)
-                        + "<br><b>Actual cancer rate:</b> " + round(props.obs_canrate, 5)
-                        + "<br><b>Calculated cancer rate:</b> " + round(props.calc_canrate, 5)
-                        + "<br><b>Residual:</b> " + round(props.residual, 5);
+                    var popupText = "<b>Nitrate concentration:</b> " + round(props.nitr_con, 3) + " mg/L"
+                        + "<br><b>Actual cancer rate:</b> " + round(1000 * props.obs_canrate, 3) + " /1000 ppl."
+                        + "<br><b>Calculated cancer rate:</b> " + round(1000 * props.calc_canrate, 3) + " /1000 ppl."
+                        + "<br><b>Residual:</b> " + round(1000 * props.residual, 3) + " /1000 ppl.";
 
                     new mapboxgl.Popup()
                         .setLngLat(coordinates)
