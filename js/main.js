@@ -40,9 +40,11 @@ map.on('load', function(){
             "fill-color": [ "interpolate",
                 ["linear"],
                 ["get", "canrate"],
-                    0.0, "#2974ff",
-                    0.25, "yellow",
-                    0.5, "red"
+                    0.0, "#0048ff",
+                    0.125, "#abd9e9",
+                    0.25, "#ffffbf",
+                    0.375, "#fdae61",
+                    0.5, "#ff3c3c"
             ],
             "fill-opacity": 0.65
         }
@@ -63,7 +65,9 @@ map.on('load', function(){
                 ["linear"],
                 ["get", "nitr_con"],
                 0, "#fff2f5",
+                2, "#fbb4b9",
                 4, "#ff63b6",
+                8, "#c51b8a",
                 12, "#8b008b"
             ]
         },
@@ -118,8 +122,10 @@ map.on('load', function(){
                     "fill-color": [ "interpolate",
                         ["linear"],
                         ["get", "nitr_con"],
-                            0, "#fff2f5",
+                            0, "#feebe2",
+                            2, "#fbb4b9",
                             4, "#ff63b6",
+                            8, "#c51b8a",
                             12, "#8b008b"
                 ],
                 "fill-opacity": 0.65
@@ -232,10 +238,15 @@ map.on('load', function(){
                         "fill-color": [ "interpolate",
                             ["linear"],
                             ["get", "residual"],
-                                // 0, "#000000",
-                                0, "blue",
-                                0.15, "yellow",
-                                0.3, "red"
+                                -0.20, "#fcffa4",
+                                -0.15, "#ec6627",
+                                -0.10, "#731a6e",
+                                -0.05, "#2c0a58",
+                                0, "#000004",
+                                0.05, "#2c0a58",
+                                0.10, "#731a6e",
+                                0.15, "#ec6627",
+                                0.20, "#fcffa4"
                     ],
                     "fill-opacity": 0.65
                     }
