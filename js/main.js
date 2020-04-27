@@ -15,7 +15,8 @@ var regressionGrid = [];
 $('#nitrate-grid-legend').hide();
 $('#regression-grid-legend').hide();
 $('#residual-grid-legend').hide();
-$('#explanation-text').hide()
+$('#explanation-text').hide();
+$('#loader').hide();
 
 // setup data source
 // https://docs.mapbox.com/mapbox-gl-js/style-spec/sources/#geojson
@@ -74,6 +75,9 @@ map.on('load', function(){
     });
 
     $('#weight-submit').on('click', function(){
+        // show the loading spinner
+        $('#loader').show();
+
         var weightValue = document.getElementById("weight-input").value;
         console.log("Input Weight: " + weightValue);
 
@@ -293,6 +297,9 @@ map.on('load', function(){
                 $('#weight-input-div').hide();
                 // display the results explanation text
                 $('#explanation-text').show()
+
+                // remove the loader spinner
+                $('#loader').hide();
 
                 // layer toggle
                 var toggleableLayerIds = [
